@@ -1109,12 +1109,13 @@ function virgil() {
  */
 
 window.onload = function() {
-    let v = '', numLines = 8, maxlines = 0;
+    let v = '', numLines = 8, maxLines = virgilSample.split('\n').length;
 
     // first run UI setup
 
     // create a handle to the numLines input object in the HTML
     document.getElementById('virgil').value = virgilSample;
+    document.getElementById('numLines').value = maxLines;
     const numLinesInput = document.getElementById('numLines');
 
 
