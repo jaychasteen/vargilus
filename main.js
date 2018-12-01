@@ -1186,6 +1186,11 @@ window.onload = function() {
     const runButton = document.getElementById('run');
 
     runButton.addEventListener('click', event => {
-        document.getElementById('output').innerText = randomLines();
+        var output = document.getElementById('output').innerText
+        if (numLines == 0 || !numLines) {
+            output = "Please enter a number of lines";      
+        } else {
+            output = randomLines();
+        }
     });
 }
