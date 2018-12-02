@@ -1109,18 +1109,22 @@ function virgil() {
  */
 
 window.onload = function() {
-    let v = '', numLines = 8, maxLines = virgilSample.split('\n').length;
+    let v = sanitizeSplit(virgilSample.split('\n'));
+    let numLines = v.length;
+    let maxLines = v.length;
+
+    let textArea = document.getElementById('virgil');
+    let numLinesInput = document.getElementById('numLines');    
 
     // first run UI setup
 
     // create a handle to the numLines input object in the HTML
-    document.getElementById('virgil').value = virgilSample;
-    document.getElementById('numLines').value = maxLines;
-    const numLinesInput = document.getElementById('numLines');
+    textArea.value = virgilSample;
+    numLinesInput.value = maxLines;
 
 
     // Setup an input listener on the input text
-    const textInput = document.getElementById('virgil');
+    let textInput = document.getElementById('virgil');
 
     textInput.addEventListener('change', event => {
         v = virgil();
@@ -1142,36 +1146,22 @@ window.onload = function() {
     // Also, this function needs access to the v and numLines values
     // which it would not have if this function were outside this scope
     function randomLines() {
-        // stores the random ints
-        let indices = [];
-        // stores the lines
+
+        let workingText = v;
         let result = [];
+        let r;
         
-        // generate unique indices
+        console.log(workingText);
+        
         for (let i = 0; i < numLines; i++) {
-            let trying = true
+            r = randInt(workingText.length);
 
-            // this will keep trying until it gets a random int that does not
-            // already exist in the array
-            // If you were to run this with numLines = v.length, this may not
-            // be the most efficient way to achieve this
-            // Another way to do it might be to use array.pop() to remove the index
-            // from the array, then update numLines each time a selection is made
-            while (trying) {
-                let r = randInt(v.length);
+            console.log(r);
 
-                if (indices.indexOf(r) < 0) {
-                    indices.push(r);
-                    trying = false;
-                }
-            }
+            result.push(workingText[r]);
+            workingText.splice(r, 1);
         }
         
-        // Push the lines' contents to the result array
-        indices.forEach( elem => {
-            result.push(v[elem]);
-        });
-
         // return the result joined together with newlines
         return result.join('\n');
     }
@@ -1186,11 +1176,17 @@ window.onload = function() {
     const runButton = document.getElementById('run');
 
     runButton.addEventListener('click', event => {
-        var output = document.getElementById('output').innerText
+        var output = document.getElementById('output');
         if (numLines == 0 || !numLines) {
-            output = "Please enter a number of lines";      
+            output.innerText = "Please enter a number of lines";      
         } else {
-            output = randomLines();
+            output.innerText = randomLines();
         }
+    });
+
+    const clearButton = document.getElementById('clear');
+
+    clearButton.addEventListener('click', event => {
+        textArea.value = "";
     });
 }
